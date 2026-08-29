@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0b0f22">
+<title>أبطال العاصفة — Storm Heroes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<canvas id="scene"></canvas>
+<div id="vignette"></div>
+
+<!-- ══════════════ شاشة التحميل ══════════════ -->
+<section id="screen-boot" class="screen active">
+  <div class="boot-inner">
+    <div class="logo big">
+      <span class="logo-line1">أبطــال</span>
+      <span class="logo-line2">العـاصفـة</span>
+      <span class="logo-en">STORM HEROES</span>
+    </div>
+    <div class="loadbar"><div id="loadfill"></div></div>
+    <div id="loadtext">جارٍ تجهيز الجزيرة…</div>
+    <div id="boottip" class="tip"></div>
+  </div>
+</section>
+
+<!-- ══════════════ القائمة الرئيسية ══════════════ -->
+<section id="screen-menu" class="screen">
+  <div class="menu-top">
+    <div class="logo small">
+      <span class="logo-line1">أبطــال</span>
+      <span class="logo-line2">العـاصفـة</span>
+    </div>
+    <div class="menu-tabs">
+      <button class="tab active" data-tab="play">اللعب</button>
+      <button class="tab" data-tab="help">كيف ألعب</button>
+      <button class="tab" data-tab="settings">الإعدادات</button>
+    </div>
+  </div>
+
+  <!-- تبويب اللعب -->
+  <div class="menu-body tabview active" id="tab-play">
+    <div class="hero-panel">
+      <div class="panel-title">اختر بطلك</div>
+      <div id="hero-cards" class="hero-cards"></div>
+      <div class="hero-detail">
+        <div class="hd-name" id="hd-name">أسيل</div>
+        <div class="hd-title" id="hd-title">قنّاصة الفجر</div>
+        <div class="hd-desc" id="hd-desc"></div>
+        <div class="hd-perk"><span class="perk-icon">★</span><span id="hd-perk"></span></div>
+      </div>
+      <button id="btn-play" class="btn primary huge">
+        <span class="btn-label">ابدأ المعركة</span>
+        <span class="btn-sub">١٦ لاعبًا — الفائز واحد</span>
+      </button>
+      <div class="menu-footnote">اللاعبون: أسيل • جنان • عبدالله • أسامة</div>
+    </div>
+  </div>
+
+  <!-- تبويب المساعدة -->
+  <div class="menu-body tabview" id="tab-help">
+    <div class="help-panel">
+      <div class="panel-title">التحكّم</div>
+      <div class="keygrid">
+        <div class="kgroup">
+          <h4>الحركة</h4>
+          <div class="krow"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>التحرّك</span></div>
+          <div class="krow"><kbd>Shift</kbd><span>الجري السريع</span></div>
+          <div class="krow"><kbd>مسافة</kbd><span>القفز / فتح الشراع</span></div>
+          <div class="krow"><kbd>Ctrl</kbd><span>الانحناء</span></div>
+          <div class="krow"><kbd>الفأرة</kbd><span>النظر حولك</span></div>
+        </div>
+        <div class="kgroup">
+          <h4>القتال</h4>
+          <div class="krow"><kbd>زر أيسر</kbd><span>إطلاق النار</span></div>
+          <div class="krow"><kbd>زر أيمن</kbd><span>التصويب الدقيق</span></div>
+          <div class="krow"><kbd>R</kbd><span>إعادة التعبئة</span></div>
+          <div class="krow"><kbd>١ … ٥</kbd><span>تبديل السلاح</span></div>
+          <div class="krow"><kbd>H</kbd><span>استخدام درع / علاج</span></div>
+        </div>
+        <div class="kgroup">
+          <h4>البناء والحصاد</h4>
+          <div class="krow"><kbd>G</kbd><span>وضع البناء</span></div>
+          <div class="krow"><kbd>Z</kbd><span>جدار</span></div>
+          <div class="krow"><kbd>X</kbd><span>أرضية</span></div>
+          <div class="krow"><kbd>C</kbd><span>منحدر</span></div>
+          <div class="krow"><kbd>V</kbd><span>هرم</span></div>
+          <div class="krow"><kbd>F</kbd><span>تغيير المادة</span></div>
+          <div class="krow"><kbd>E</kbd><span>فتح صندوق / التقاط</span></div>
+        </div>
+      </div>
+      <div class="pad-block">
+        <h4>🎮 يد التحكّم (PlayStation / Xbox)</h4>
+        <p class="pad-note">وصّل اليد بالبلوتوث، وستعمل تلقائيًّا. وصّل الحاسوب بالتلفزيون بكابل HDMI للّعب على الشاشة الكبيرة.</p>
+        <div class="keygrid">
+          <div class="kgroup">
+            <h4>الحركة والنظر</h4>
+            <div class="krow"><kbd>العصا اليسرى</kbd><span>التحرّك</span></div>
+            <div class="krow"><kbd>العصا اليمنى</kbd><span>النظر</span></div>
+            <div class="krow"><kbd>ضغط العصا اليسرى</kbd><span>الجري</span></div>
+            <div class="krow"><kbd>✕ / A</kbd><span>القفز / الشراع</span></div>
+            <div class="krow"><kbd>◯ / B</kbd><span>الانحناء</span></div>
+          </div>
+          <div class="kgroup">
+            <h4>القتال</h4>
+            <div class="krow"><kbd>R2 / RT</kbd><span>إطلاق النار</span></div>
+            <div class="krow"><kbd>L2 / LT</kbd><span>التصويب الدقيق</span></div>
+            <div class="krow"><kbd>R1 / RB</kbd><span>السلاح التالي</span></div>
+            <div class="krow"><kbd>L1 / LB</kbd><span>إعادة التعبئة</span></div>
+            <div class="krow"><kbd>ضغط العصا اليمنى</kbd><span>الفأس</span></div>
+          </div>
+          <div class="kgroup">
+            <h4>البناء والأدوات</h4>
+            <div class="krow"><kbd>■ / X</kbd><span>وضع البناء</span></div>
+            <div class="krow"><kbd>▲ / Y</kbd><span>فتح صندوق / التقاط</span></div>
+            <div class="krow"><kbd>← →</kbd><span>نوع البناء</span></div>
+            <div class="krow"><kbd>↑</kbd><span>درع / علاج</span></div>
+            <div class="krow"><kbd>↓</kbd><span>تغيير المادة</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tips-block">
+        <h4>نصائح للفوز</h4>
+        <ul>
+          <li>اضرب الأشجار والصخور بالفأس لتجمع مواد البناء — الجدار السريع ينقذ حياتك.</li>
+          <li>افتح الصناديق الذهبية أوّلًا؛ فيها أفضل الأسلحة والدروع.</li>
+          <li>ابقَ دائمًا داخل الدائرة الآمنة، والعاصفة تؤلم أكثر كل مرحلة.</li>
+          <li>ابنِ منحدرًا لتصعد فوق خصمك — الأعلى يرى أكثر ويصيب أسهل.</li>
+          <li>الإصابة في الرأس تضاعف الضرر تقريبًا!</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- تبويب الإعدادات -->
+  <div class="menu-body tabview" id="tab-settings">
+    <div class="settings-panel">
+      <div class="panel-title">الإعدادات</div>
+      <div class="setrow">
+        <label>حساسية الفأرة</label>
+        <input type="range" id="set-sens" min="0.2" max="3" step="0.05" value="1">
+        <span class="val" id="val-sens">1.00</span>
+      </div>
+      <div class="setrow">
+        <label>مستوى الرسومات</label>
+        <div class="segmented" id="set-quality">
+          <button data-q="low">منخفض</button>
+          <button data-q="medium">متوسط</button>
+          <button data-q="high" class="on">عالٍ</button>
+        </div>
+      </div>
+      <div class="setrow">
+        <label>الصوت العام</label>
+        <input type="range" id="set-vol" min="0" max="1" step="0.05" value="0.75">
+        <span class="val" id="val-vol">75%</span>
+      </div>
+      <div class="setrow">
+        <label>الموسيقى</label>
+        <input type="range" id="set-mus" min="0" max="1" step="0.05" value="0.4">
+        <span class="val" id="val-mus">40%</span>
+      </div>
+      <div class="setrow">
+        <label>المؤثرات الصوتية</label>
+        <input type="range" id="set-sfx" min="0" max="1" step="0.05" value="0.9">
+        <span class="val" id="val-sfx">90%</span>
+      </div>
+      <div class="setrow">
+        <label>حساسية يد التحكّم</label>
+        <input type="range" id="set-gpsens" min="0.3" max="2.5" step="0.05" value="1">
+        <span class="val" id="val-gpsens">1.00</span>
+      </div>
+      <div class="setrow">
+        <label>التصويب المساعد (لليد)</label>
+        <div class="segmented" id="set-assist">
+          <button data-a="1" class="on">مفعّل</button>
+          <button data-a="0">مطفأ</button>
+        </div>
+      </div>
+      <div class="setrow">
+        <label>عكس المحور الرأسي</label>
+        <div class="segmented" id="set-invert">
+          <button data-v="0" class="on">لا</button>
+          <button data-v="1">نعم</button>
+        </div>
+      </div>
+      <div class="setrow">
+        <label>عدد اللاعبين</label>
+        <div class="segmented" id="set-count">
+          <button data-n="10">١٠</button>
+          <button data-n="16" class="on">١٦</button>
+          <button data-n="24">٢٤</button>
+        </div>
+      </div>
+      <div class="setrow">
+        <label>صعوبة الخصوم</label>
+        <div class="segmented" id="set-diff">
+          <button data-d="easy">سهل</button>
+          <button data-d="normal" class="on">متوسط</button>
+          <button data-d="hard">صعب</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ واجهة اللعب ══════════════ -->
+<div id="hud">
+  <!-- الإحصاءات -->
+  <div class="hud-stats">
+    <div class="stat-box">
+      <div class="stat-ico">👥</div>
+      <div><div class="stat-val" id="stat-alive">16</div><div class="stat-lbl">أحياء</div></div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-ico">🎯</div>
+      <div><div class="stat-val" id="stat-kills">0</div><div class="stat-lbl">إقصاءات</div></div>
+    </div>
+    <div class="stat-box storm" id="storm-box">
+      <div class="stat-ico">🌀</div>
+      <div><div class="stat-val" id="stat-storm">0:42</div><div class="stat-lbl" id="storm-lbl">تتقلّص بعد</div></div>
+    </div>
+  </div>
+
+  <div id="killfeed"></div>
+
+  <!-- الخريطة المصغّرة -->
+  <div class="minimap-wrap">
+    <div class="compass" id="compass"><div class="compass-strip" id="compass-strip"></div><div class="compass-mark"></div></div>
+    <canvas id="minimap" width="260" height="260"></canvas>
+    <div class="minimap-ring"></div>
+  </div>
+
+  <!-- الصحة والدرع -->
+  <div class="vitals">
+    <div class="bar shield"><div class="fill" id="bar-shield"></div><span id="txt-shield">0</span></div>
+    <div class="bar health"><div class="fill" id="bar-health"></div><span id="txt-health">100</span></div>
+  </div>
+
+  <!-- المخزون -->
+  <div class="inventory" id="inventory"></div>
+
+  <!-- المواد والأدوات -->
+  <div class="materials">
+    <div class="mat" data-m="0"><span class="mi wood"></span><span id="mat-0">50</span></div>
+    <div class="mat" data-m="1"><span class="mi stone"></span><span id="mat-1">0</span></div>
+    <div class="mat" data-m="2"><span class="mi metal"></span><span id="mat-2">0</span></div>
+    <div class="consum">
+      <div class="cs"><span class="ci shield"></span><span id="cs-shield">0</span></div>
+      <div class="cs"><span class="ci heal"></span><span id="cs-heal">0</span></div>
+    </div>
+  </div>
+
+  <!-- شريط البناء -->
+  <div class="buildbar" id="buildbar">
+    <div class="bslot" data-b="wall"><span class="bico wall"></span><b>جدار</b><i>Z</i></div>
+    <div class="bslot" data-b="ramp"><span class="bico ramp"></span><b>منحدر</b><i>C</i></div>
+    <div class="bslot" data-b="floor"><span class="bico floor"></span><b>أرضية</b><i>X</i></div>
+    <div class="bslot" data-b="pyr"><span class="bico pyr"></span><b>هرم</b><i>V</i></div>
+    <div class="bmat" id="bmat">خشب <i>F</i></div>
+  </div>
+
+  <!-- المركز -->
+  <div id="crosshair"><i class="ch-t"></i><i class="ch-b"></i><i class="ch-l"></i><i class="ch-r"></i><i class="ch-dot"></i></div>
+  <div id="hitmarker"></div>
+  <div id="scope"><div class="scope-in"></div><div class="scope-h"></div><div class="scope-v"></div></div>
+  <div id="dmgdirs"></div>
+  <div id="dmgnums"></div>
+  <div id="nameplates"></div>
+
+  <div id="prompt"><kbd>E</kbd><span id="prompt-txt"></span></div>
+  <div id="centermsg"></div>
+  <div id="toast"></div>
+  <div id="stormwarn">⚠ أنت داخل العاصفة — تحرّك إلى المنطقة الآمنة!</div>
+  <div id="healbar"><div class="hb-fill" id="hb-fill"></div><span id="hb-txt"></span></div>
+  <div id="reloadring"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16"/><circle cx="20" cy="20" r="16" id="rl-arc"/></svg><span>تعبئة</span></div>
+
+  <!-- أزرار اللمس -->
+  <div id="stick"><div id="stick-knob"></div></div>
+  <div class="touchbtns">
+    <button id="t-fire" class="tb big">🔥</button>
+    <button id="t-jump" class="tb">⤴</button>
+    <button id="t-sprint" class="tb">💨</button>
+    <button id="t-build" class="tb">🧱</button>
+    <button id="t-use" class="tb">E</button>
+  </div>
+</div>
+
+<!-- ══════════════ الإيقاف المؤقت ══════════════ -->
+<section id="screen-pause" class="screen overlay">
+  <div class="pause-card">
+    <h2>إيقاف مؤقت</h2>
+    <button class="btn primary" id="btn-resume">متابعة اللعب</button>
+    <button class="btn" id="btn-pause-help">التحكّم</button>
+    <button class="btn danger" id="btn-quit">الخروج إلى القائمة</button>
+    <div class="pause-hint">اضغط <kbd>Esc</kbd> للمتابعة</div>
+  </div>
+</section>
+
+<!-- ══════════════ النتيجة ══════════════ -->
+<section id="screen-result" class="screen overlay">
+  <div class="result-card">
+    <div id="res-crown">👑</div>
+    <h1 id="res-title">فوز ملكي!</h1>
+    <div id="res-sub"></div>
+    <div class="res-stats">
+      <div><b id="res-place">#1</b><span>الترتيب</span></div>
+      <div><b id="res-kills">0</b><span>إقصاءات</span></div>
+      <div><b id="res-dmg">0</b><span>الضرر</span></div>
+      <div><b id="res-time">0:00</b><span>المدّة</span></div>
+    </div>
+    <div class="res-btns">
+      <button class="btn primary" id="btn-again">مباراة جديدة</button>
+      <button class="btn" id="btn-menu">القائمة الرئيسية</button>
+    </div>
+  </div>
+  <div id="confetti"></div>
+</section>
+
+<div id="padhint"></div>
+<div id="fatal"></div>
+
+<script src="js/math.js"></script>
+<script src="js/geometry.js"></script>
+<script src="js/shaders.js"></script>
+<script src="js/gl.js"></script>
+<script src="js/renderer.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/input.js"></script>
+<script src="js/world.js"></script>
+<script src="js/characters.js"></script>
+<script src="js/weapons.js"></script>
+<script src="js/build.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/game.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
